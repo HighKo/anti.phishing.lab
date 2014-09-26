@@ -1,5 +1,6 @@
 package de.tu.darmstadt;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -13,17 +14,28 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController;
+import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController.BackendInitListener;
+import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendControllerImpl;
+import de.tudarmstadt.informatik.secuso.phishedu.backend.PhishURL;
+
 public class HomePage extends WebPage {
 	private static final long serialVersionUID = 1L;
 	
 	private Label selectedLabel;
 
+	private BackendController controller;
+
     public HomePage(final PageParameters parameters) {
 		super(parameters);
-				
-		String testURL = "http://host.second-level.fl/path/document.type?query=magic";
 		
-		String[] components = splitURLStringIntoComponents(testURL);
+		this.controller = BackendControllerImpl.getInstance();
+		this.controller.init(null, new EmptyBackendListener() );
+		this.controller.startLevel(1);
+		this.controller.nextUrl();
+		PhishURL url = this.controller.getUrl();
+		String[] components = url.getParts();
+
 		if (components == null){
 			return;
 		}
@@ -105,4 +117,24 @@ public class HomePage extends WebPage {
 		String[] components = {scheme, userInfo, host, port, path, query, fragment};
 		return components;
 	}
+	
+	
+	public class EmptyBackendListener implements BackendInitListener, Serializable{
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public void initProgress(int percent) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onInitDone() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 }
+
