@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.secuso.phishedu.backend;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import com.sun.jndi.toolkit.url.Uri;
@@ -9,7 +10,7 @@ import com.sun.jndi.toolkit.url.Uri;
  * @author Clemens Bergmann <cbergmann@schuhklassert.de>
  *
  */
-public interface BackendController{
+public interface BackendController extends Serializable{
 	/**
 	 * This function must be called directly before the first start of the app.
 	 * It will register the caller with the backend for callbacks.
@@ -100,13 +101,13 @@ public interface BackendController{
 	 * The user has to restart the given level from 0 points each time the app starts.
 	 * @return points in the current level.
 	 */
-	public int getLevelPoints();
+	public int getCurrentLevelPoints();
 	
 	/**
 	 * Get the maximum number of points the user might get in this level.
 	 * @return The maximum number of possible Points in this level.
 	 */
-	public int getLevelmaxPoints();
+	public int getCurrentLevelMaxPoints();
 	
 	/**
 	 * This function is called when the user chooses weather this URL is a phish or not 
@@ -116,7 +117,7 @@ public interface BackendController{
 	public PhishResult userClicked(boolean accptance);
 	
 	/**
-	 * This function must be called when the user selects a part of the URL as phishy.
+	 * This function must be called when the user selects a part of the URL as phishy (as the who-part).
 	 * @param part the part that the user suspects to be an attack.
 	 * @return true of the user clicked the correct part. False otherwise
 	 */
@@ -148,13 +149,13 @@ public interface BackendController{
 	 * How many URLs must the user answer in this Level
 	 * @return An Integer representing the number of URLs in this level
 	 */
-	public int levelCorrectURLs();
+	public int currentLevelRequiredCorrectURLs();
 	
 	/**
 	 * How many Phishes must the user answer in this Level
 	 * @return An Integer representing the number of Phishes in this level
 	 */
-	public int levelCorrectPhishes();
+	public int currentLevelRequiredCorrectPhishes();
 	
 	/**
 	 * How many URLs did the user correctly identfiy
