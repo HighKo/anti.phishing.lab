@@ -307,6 +307,7 @@ public interface BackendController extends Serializable{
 	
 	/**
 	 * Return whether to show the proof activity 
+	 * proof requires the user to select the WHO part, see Thesis Figure 12
 	 * @return true to show, false if not.
 	 */
 	public boolean showProof();

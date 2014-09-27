@@ -43,19 +43,19 @@ public class NoPhishLevelInfo {
 		return textSize;
 	}
 
-	private static final int[] levelTitlesIds = {11110,11111,11112,11113 };//TODO:what does this stuff do?
+	private static final int[] levelTitlesIds = {11110,11111,11112,11113,11114,11115,11116,11117 };//TODO:what does this stuff do?
 
-	private static final int[] levelSubtitlesIds = {11110,11111,11112,11113 };
+	private static final int[] levelSubtitlesIds = {11110,11111,11112,11113,11114,11115,11116,11117 };
 
-	private static final int[][] levelIntroLayoutIds = {{1},{2},{3},{4}};
+	private static final int[][] levelIntroLayoutIds = {{1},{2},{3},{4},{5},{6},{7},{8}};
 
-	private static final int[][] levelFinishedLayoutIds ={{1},{2},{3},{4}};
+	private static final int[][] levelFinishedLayoutIds ={{1},{2},{3},{4},{5},{6},{7},{8}};
 
 	// For each level we can define what Attacks are applied
 	// LEVEL 0-1 are empty because they don't
 	@SuppressWarnings("rawtypes")
-	public static final PhishAttackType[][] levelAttackTypes = { {}, // Level 0:
-																		// Awareness
+	public static final PhishAttackType[][] levelAttackTypes = { 
+			{}, // Level 0: Awareness
 			{}, // Level 1: Find URLBar in Browser
 			{ PhishAttackType.Level2 }, // Level 2
 			{ PhishAttackType.IP }, // Level 3
@@ -77,8 +77,9 @@ public class NoPhishLevelInfo {
 	}
 
 	private static Class[][] levelGenerators = {
-	// Currently we use the same generators for all levels
-	{ KeepGenerator.class }, };
+		// Currently we use the same generators for all levels
+		{ KeepGenerator.class }, 
+	};
 
 	public static int levelCount() {
 		return levelIntroLayoutIds.length;
@@ -130,20 +131,24 @@ public class NoPhishLevelInfo {
 	}
 
 	public int levelCorrectURLs() {
-		if (levelId == 2) {
-			return 5;
-		}
-		return 6 + (2 * this.levelId);
+		return 2;
+		
+//		if (levelId == 2) {
+//			return 5;
+//		}
+//		return 6 + (2 * this.levelId);
 	}
 
 	public int levelPhishes() {
-		int base_phishes = 0;
-		if (this.levelId == 2) {
-			base_phishes = levelCorrectURLs();
-		} else {
-			base_phishes = levelCorrectURLs() / 2;
-		}
-		return base_phishes;
+		return 2;
+		
+//		int base_phishes = 0;
+//		if (this.levelId == 2) {
+//			base_phishes = levelCorrectURLs();
+//		} else {
+//			base_phishes = levelCorrectURLs() / 2;
+//		}
+//		return base_phishes;
 	}
 
 	public int levelRepeats() {

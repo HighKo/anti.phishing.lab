@@ -1,8 +1,6 @@
 package de.tu.darmstadt;
 
 import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -21,10 +18,13 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController;
 import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController.BackendInitListener;
+import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController.Levelstate;
+import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController.OnLevelChangeListener;
+import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController.OnLevelstateChangeListener;
 import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendControllerImpl;
 import de.tudarmstadt.informatik.secuso.phishedu.backend.PhishURL;
 
-public class HomePage extends WebPage {
+public class HomePage extends WebPage implements OnLevelChangeListener, OnLevelstateChangeListener {
 	private static final long serialVersionUID = 1L;
 	
 	private Label selectedLabel;
@@ -42,6 +42,9 @@ public class HomePage extends WebPage {
 		this.controller.init(null, new EmptyBackendListener() );
 		this.controller.startLevel(1);
 		this.controller.nextUrl();
+		
+		controller.addOnLevelChangeListener(this);
+		controller.addOnLevelstateChangeListener(this);
 		
 		showURL(this.controller.getUrl());
 		addButtons();
@@ -63,10 +66,6 @@ public class HomePage extends WebPage {
 		levelModel.setObject("Level:"+controller.getLevel());
 	}
 
-	private String createLifeString() {
-		return "Lifes:"+controller.getLifes();
-	}
-
 	private void addButtons() {
 		Form form = new Form("form1") {
 			private static final long serialVersionUID = 1L;
@@ -81,14 +80,15 @@ public class HomePage extends WebPage {
 
 			public void onSubmit() {
 				int componentIndex = Arrays.asList(urlParts).indexOf(selectedComponent);
-				boolean userSelectedCorrectPart = controller.partClicked(componentIndex);							
+				boolean userSelectedCorrectPart = controller.partClicked(componentIndex);		
+//				controller.userClicked(true);
 				if (userSelectedCorrectPart){
 					selectedLabel.add(correctLabelAttributeModifier());
 				} else {
 					selectedLabel.add(wrongLabelAttributeModifier());
 				}
 				
-				updateLifesLabel();
+				updateLifesLabel();//should work through listener, not here
 	        }
 	    };
 	    
@@ -98,7 +98,6 @@ public class HomePage extends WebPage {
 			public void onSubmit() {
 	            controller.nextUrl();
 	            showURL(controller.getUrl());
-	            updateLevelLabel();
 	        }
 	    };
 	    
@@ -184,6 +183,35 @@ public class HomePage extends WebPage {
 			// TODO Auto-generated method stub
 			
 		}
+		
+	}
+
+	@Override
+	public void onLevelstateChange(Levelstate new_state, int level) {
+		System.out.println("onLevelstateChange fired");
+		//here we get notified if the level is finished
+		
+		switch (new_state) {
+		case finished:
+			controller.startLevel(controller.getLevel()+1);//TODO:check for max level (shouldnt the controller do this)
+			break;
+		case failed:
+			controller.startLevel(controller.getLevel());//TODO:start with introduction
+			break;
+		default:
+			break;
+		}
+		
+		updateLevelLabel();
+		updateLifesLabel();
+	}
+
+	@Override
+	public void onLevelChange(int new_levelid) {
+		System.out.println("onLevelChange fired");
+		
+		updateLevelLabel();
+		updateLifesLabel();
 		
 	}
 }
