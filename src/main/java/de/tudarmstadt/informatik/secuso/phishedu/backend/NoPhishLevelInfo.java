@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.secuso.phishedu.backend;
 
+import de.tu.darmstadt.R;
 import de.tudarmstadt.informatik.secuso.phishedu.backend.generator.BaseGenerator;
 import de.tudarmstadt.informatik.secuso.phishedu.backend.generator.KeepGenerator;
 
@@ -10,7 +11,7 @@ public class NoPhishLevelInfo {
 	private static final double LEVEL_DISTANCE = 1.5;
 	public static final int FIRST_REPEAT_LEVEL = 4;
 
-	private static final int[] levelOutros = { 0, 0, 1337 };//TODO"R.string.level_02_outro"
+	private static final int[] levelOutros = { 0, 0, 1337 };//TODO"R.level_02_outro"
 
 	public float getURLTextsize() {
 		float textSize = 20;
@@ -43,17 +44,28 @@ public class NoPhishLevelInfo {
 		return textSize;
 	}
 
-	private static final int[] levelTitlesIds = {11110,11111,11112,11113,11114,11115,11116,11117 };//TODO:what does this stuff do?
+	private static final String[] levelTitlesIds = { R.level_title_00,
+		R.level_title_01, R.level_title_02,
+		R.level_title_03, R.level_title_04,
+		R.level_title_05, R.level_title_06,
+		R.level_title_07, R.level_title_08,
+		R.level_title_09, R.level_title_10,
+		R.level_title_11 };
 
-	private static final int[] levelSubtitlesIds = {11110,11111,11112,11113,11114,11115,11116,11117 };
+	private static final String[] levelSubtitlesIds = {
+		R.level_subtitle_00, R.level_subtitle_01,
+		R.level_subtitle_02, R.level_subtitle_03,
+		R.level_subtitle_04, R.level_subtitle_05,
+		R.level_subtitle_06, R.level_subtitle_07,
+		R.level_subtitle_08, R.level_subtitle_09,
+		R.level_subtitle_10, R.level_subtitle_11 };
 
-	private static final int[][] levelIntroLayoutIds = {{1},{2},{3},{4},{5},{6},{7},{8}};
-
-	private static final int[][] levelFinishedLayoutIds ={{1},{2},{3},{4},{5},{6},{7},{8}};
+//	private static final int[][] levelIntroLayoutIds = {{1},{2},{3},{4},{5},{6},{7},{8}};
+//
+//	private static final int[][] levelFinishedLayoutIds ={{1},{2},{3},{4},{5},{6},{7},{8}};
 
 	// For each level we can define what Attacks are applied
 	// LEVEL 0-1 are empty because they don't
-	@SuppressWarnings("rawtypes")
 	public static final PhishAttackType[][] levelAttackTypes = { 
 			{}, // Level 0: Awareness
 			{}, // Level 1: Find URLBar in Browser
@@ -76,22 +88,22 @@ public class NoPhishLevelInfo {
 		return false;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static Class[][] levelGenerators = {
 		// Currently we use the same generators for all levels
 		{ KeepGenerator.class }, 
 	};
 
 	public static int levelCount() {
-		return levelIntroLayoutIds.length;
+		return levelAttackTypes.length;
 	}
 
-	public final int titleId;
-	public final int subTitleId;
+	public final String titleId;
+	public final String subTitleId;
 	public final int outroId;
-	public final int[] introLayouts;
-	public final int[] finishedLayouts;
+//	public final int[] introLayouts;
+//	public final int[] finishedLayouts;
 	public final int levelId;
-	@SuppressWarnings("rawtypes")
 	public final PhishAttackType[] attackTypes;
 	public final Class<? extends BaseGenerator>[] generators;
 	public final String levelNumber;
@@ -101,11 +113,11 @@ public class NoPhishLevelInfo {
 		this.levelId = levelid;
 		this.titleId = levelTitlesIds[levelid];
 		this.subTitleId = levelSubtitlesIds[levelid];
-		int intro_index = Math.min(levelid, levelIntroLayoutIds.length - 1);
-		this.introLayouts = levelIntroLayoutIds[intro_index];
-		int finished_index = Math.min(levelid,
-				levelFinishedLayoutIds.length - 1);
-		this.finishedLayouts = levelFinishedLayoutIds[finished_index];
+//		int intro_index = Math.min(levelid, levelIntroLayoutIds.length - 1);
+//		this.introLayouts = levelIntroLayoutIds[intro_index];
+//		int finished_index = Math.min(levelid,
+//				levelFinishedLayoutIds.length - 1);
+//		this.finishedLayouts = levelFinishedLayoutIds[finished_index];
 		int attacktype_index = Math.min(levelid, levelAttackTypes.length - 1);
 		this.attackTypes = levelAttackTypes[attacktype_index];
 		if (levelid < 2) {
