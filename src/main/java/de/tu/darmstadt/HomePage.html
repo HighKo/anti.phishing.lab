@@ -29,8 +29,7 @@
 	<center><b style="font-size:22px">Antiphishing Quiz<br /></b> </center><a name="c23538"></a><div id="c23538" class="csc-default"><p class="bodytext">
 			<div id="Mitte" style="height:350px">
  <br />
- <br />
- <br />
+
  						<center>
 						<div id="Punkte_Anzeige" class="Punkte_Kasten" style="width:400px;border: thick solid #CCCCCC;padding-top:10px;padding-bottom:10px;padding-left:5px;background:#F8F8F8;">
 						
@@ -51,6 +50,28 @@
 						</center>
 	<p> <br />
 	</p>
+	
+	<p>
+		<center>
+			<div>
+				<span style="padding-top:12px;font-size:17px" >Ist die URL ein Phish oder die echte?</span>
+			</div>
+			
+			<br/>
+			
+			<div>
+				<span wicket:id = "UrlLabel"> </span>
+			</div>
+			
+			<br/>
+		
+			<form wicket:id = "formPhishOriginal">
+				<input type = "submit" wicket:id = "buttonPhish" value = "Phish"/>
+				<input type = "submit" wicket:id = "buttonOriginal" value = "Echte Webseite"/>
+			</form>
+		</center>
+	</p>
+	
 	<p> <br />
 	</p>
 	

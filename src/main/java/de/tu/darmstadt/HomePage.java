@@ -35,6 +35,7 @@ public class HomePage extends WebPage implements OnLevelChangeListener, OnLevels
 
 	private Model<String> lifesModel;
 	private Model<String> levelModel;
+	private Model<String> urlLabelModel;
 
     public HomePage(final PageParameters parameters) {
 		super(parameters);
@@ -49,6 +50,7 @@ public class HomePage extends WebPage implements OnLevelChangeListener, OnLevels
 		
 		showURL(this.controller.getUrl());
 		addButtons();
+		addPhishOriginalWebsiteButton();
 		
 		this.lifesModel = new Model<String>();
 		add(new Label("LifesLabel",lifesModel));
@@ -57,6 +59,10 @@ public class HomePage extends WebPage implements OnLevelChangeListener, OnLevels
 		this.levelModel = new Model<String>();
 		add(new Label("LevelLabel",levelModel));
 		updateLevelLabel();
+		
+		this.urlLabelModel = new Model<String>();
+		add(new Label("UrlLabel", this.urlLabelModel));
+		updateURLLabel();
     }
 
 	private void updateLifesLabel() {
@@ -65,6 +71,16 @@ public class HomePage extends WebPage implements OnLevelChangeListener, OnLevels
 
 	private void updateLevelLabel() {
 		levelModel.setObject("Level:"+controller.getLevel());
+	}
+	
+	private void updateURLLabel(){
+		String[] urlParts = controller.getUrl().getParts();
+		int numberOfURLParts = urlParts.length;
+		String url = "";
+		for(int i = 0; i < numberOfURLParts; i++){
+			url = url + urlParts[i];
+		}
+		this.urlLabelModel.setObject(url);
 	}
 
 	private void addButtons() {
@@ -99,12 +115,53 @@ public class HomePage extends WebPage implements OnLevelChangeListener, OnLevels
 			public void onSubmit() {
 	            controller.nextUrl();
 	            showURL(controller.getUrl());
+	            updateURLLabel();
 	        }
 	    };
 	    
 	    form.add(button1);
 	    form.add(button2);
 		add(form);
+	}
+	
+	private void addPhishOriginalWebsiteButton(){
+		Form formPhishOriginal = new Form("formPhishOriginal"){
+			private static final long serialVersionUID = 1L;
+
+			protected void onSubmit() {
+	            info("Form.onSubmit executed");
+	        }
+		};
+		
+		Button buttonPhish = new Button("buttonPhish"){
+			private static final long serialVersionUID = 1L;
+			
+			public void onSubmit(){
+				if(controller.showProof()){
+					//TODO: Display Proof and then go to next question
+					//controller.userClicked(true);
+				}else{
+					controller.nextUrl();
+		            showURL(controller.getUrl());
+		            updateURLLabel();
+				}
+			}
+		};
+		
+		Button buttonOriginal = new Button("buttonOriginal"){
+			private static final long serialVersionUID = 1L;
+
+			public void onSubmit(){
+				controller.nextUrl();
+	            showURL(controller.getUrl());
+	            updateURLLabel();
+	    	}
+	    };
+	    
+	    formPhishOriginal.add(buttonPhish);
+	    formPhishOriginal.add(buttonOriginal);
+	    add(formPhishOriginal);
+		
 	}
 
 	private void showURL(PhishURL url) {
@@ -203,7 +260,7 @@ public class HomePage extends WebPage implements OnLevelChangeListener, OnLevels
 			break;
 		}
 		
-		updateLevelLabel();
+//		updateLevelLabel();
 		updateLifesLabel();
 	}
 
