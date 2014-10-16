@@ -15,6 +15,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.markup.html.link.Link;
 
 import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController;
 import de.tudarmstadt.informatik.secuso.phishedu.backend.BackendController.BackendInitListener;
@@ -214,5 +215,6 @@ public class HomePage extends WebPage implements OnLevelChangeListener, OnLevels
 		updateLifesLabel();
 		
 	}
+	
+	
 }
-
